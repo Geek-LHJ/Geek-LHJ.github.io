@@ -53,8 +53,8 @@
 <meta property="og:site_name" content="GeekLeng">
 <meta property="og:description" content="这是一个 VuxUI 组件库使用时遇到的问题，当使用的组件的样式不符合需求时，需要进行样式修改，建议使用 &#x2F;keep&#x2F; 或者 &gt;&gt;&gt; 的格式进行修改对于的类的样式，具体见文档;">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://geek-lhj.github.io/2019/02/20/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/1.png">
-<meta property="og:image" content="https://geek-lhj.github.io/2019/02/20/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/2.png">
+<meta property="og:image" content="https://geek-lhj.github.io/.io//1.png">
+<meta property="og:image" content="https://geek-lhj.github.io/.io//2.png">
 <meta property="article:published_time" content="2019-02-20T01:01:12.000Z">
 <meta property="article:modified_time" content="2020-01-05T07:02:34.995Z">
 <meta property="article:author" content="GeekLeng">
@@ -63,7 +63,7 @@
 <meta property="article:tag" content="VuxUI组件库">
 <meta property="article:tag" content="组件样式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://geek-lhj.github.io/2019/02/20/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/1.png">
+<meta name="twitter:image" content="https://geek-lhj.github.io/.io//1.png">
 
 <link rel="canonical" href="https://geek-lhj.github.io/2019/02/20/VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/">
 
@@ -254,8 +254,8 @@
 <a id="more"></a>
 
 <h1 id="VuxUI组件库修改组件样式的问题"><a href="#VuxUI组件库修改组件样式的问题" class="headerlink" title="VuxUI组件库修改组件样式的问题"></a>VuxUI组件库修改组件样式的问题</h1><h2 id="1-发现问题"><a href="#1-发现问题" class="headerlink" title="1. 发现问题"></a>1. 发现问题</h2><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>在Vue框架中，当使用到第三方的UI组件库，例如 <code>VuxUI</code> 组件库时，其中的组件的样式不一定符合要求或者展示出来的效果存在样式问题，如下面的使用VuxUI组件库中的轮播图，其中的标签文字样式出现了偏移，如下图所示；</p>
-<p><img src="VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/1.png" alt="样式问题"></p>
-<p><img src="VuxUI%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BF%AE%E6%94%B9%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98/2.png" alt="定位具体标签"></p>
+<p><img src="/.io//1.png" alt="样式问题"></p>
+<p><img src="/.io//2.png" alt="定位具体标签"></p>
 <h2 id="2-尝试解决问题的方法"><a href="#2-尝试解决问题的方法" class="headerlink" title="2. 尝试解决问题的方法"></a>2. 尝试解决问题的方法</h2><h3 id="方式一：增加层级，将原来的样式给覆盖掉"><a href="#方式一：增加层级，将原来的样式给覆盖掉" class="headerlink" title="方式一：增加层级，将原来的样式给覆盖掉"></a>方式一：增加层级，将原来的样式给覆盖掉</h3><p>根据在浏览器上面查看的层级的嵌套关系进行编写，不过由于使用第三方UI组件库，有些层级很深，因而不实用；</p>
 <h3 id="方式二：修改VuxUI组件库的源文件"><a href="#方式二：修改VuxUI组件库的源文件" class="headerlink" title="方式二：修改VuxUI组件库的源文件"></a>方式二：修改VuxUI组件库的源文件</h3><p>文件关联度太多，暂时无法提取出来，若是对源文件修改的话，你的项目若是在从Git上下载后，在使用<code>npm istall</code> 命令下载依赖后也会无效；</p>
 <h3 id="方式三：使用-deep-的格式来修改样式，不需要去掉-scoped-解决层级多的样式嵌套问题；"><a href="#方式三：使用-deep-的格式来修改样式，不需要去掉-scoped-解决层级多的样式嵌套问题；" class="headerlink" title="方式三：使用 /deep/ 的格式来修改样式，不需要去掉 scoped ,解决层级多的样式嵌套问题；"></a>方式三：使用 <code>/deep/</code> 的格式来修改样式，不需要去掉 <code>scoped</code> ,解决层级多的样式嵌套问题；</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 使用 /deep/ 或 &gt;&gt;&gt; 方式修改第三方 UI 组件的样式(搜索框高度)</span></span><br><span class="line">.container /deep/ .weui-search-bar__box &#123;</span><br><span class="line">  height: <span class="number">30</span>px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.container &gt;&gt;&gt; .weui-search-bar__box &#123;</span><br><span class="line">  height: <span class="number">30</span>px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

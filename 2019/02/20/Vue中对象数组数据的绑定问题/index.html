@@ -53,8 +53,8 @@
 <meta property="og:site_name" content="GeekLeng">
 <meta property="og:description" content="在Vue项目练习中，测试发现对于对象数组的内部数据的改变时，Vue的页面并没有出现数据的刷新操作，对该问题的分析和解决方法查看具体文档内容；">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://geek-lhj.github.io/2019/02/20/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/1.png">
-<meta property="og:image" content="https://geek-lhj.github.io/2019/02/20/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/2.png">
+<meta property="og:image" content="https://geek-lhj.github.io/.io//1.png">
+<meta property="og:image" content="https://geek-lhj.github.io/.io//2.png">
 <meta property="article:published_time" content="2019-02-20T01:30:12.000Z">
 <meta property="article:modified_time" content="2020-01-05T07:02:34.877Z">
 <meta property="article:author" content="GeekLeng">
@@ -63,7 +63,7 @@
 <meta property="article:tag" content="数据绑定">
 <meta property="article:tag" content="父子组件">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://geek-lhj.github.io/2019/02/20/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/1.png">
+<meta name="twitter:image" content="https://geek-lhj.github.io/.io//1.png">
 
 <link rel="canonical" href="https://geek-lhj.github.io/2019/02/20/Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/">
 
@@ -253,7 +253,7 @@
         <p>在Vue项目练习中，测试发现对于对象数组的内部数据的改变时，Vue的页面并没有出现数据的刷新操作，对该问题的分析和解决方法查看具体文档内容；</p>
 <a id="more"></a>
 
-<h1 id="Vue中对象数组数据的绑定问题"><a href="#Vue中对象数组数据的绑定问题" class="headerlink" title="Vue中对象数组数据的绑定问题"></a>Vue中对象数组数据的绑定问题</h1><h2 id="1-发现问题"><a href="#1-发现问题" class="headerlink" title="1. 发现问题"></a>1. 发现问题</h2><p>Vue的项目中，关于对象数组的问题，测试场景是在优惠券列表中大组件中嵌套单个优惠券，当选择某一个优惠券时，修改通过父组件传递过来的对象数据，其中父子组件是通过 <code>props</code>属性在子组件中接收数组中的对象的数据，在子组件中<code>data</code>中设置一个变量判断该子组件是否选中，初始数据为通过<code>props</code>传递的数据，并在<code>template</code>进行展示，最后改变状态是在子组件中通过 <code>$emit</code>发布订阅模式，测试到了改变父组件中的对象数组中的数据，但是测试中并没有子组件中数据显示的同步，没有改变相应的状态；<br><img src="Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/1.png" alt="画图"></p>
+<h1 id="Vue中对象数组数据的绑定问题"><a href="#Vue中对象数组数据的绑定问题" class="headerlink" title="Vue中对象数组数据的绑定问题"></a>Vue中对象数组数据的绑定问题</h1><h2 id="1-发现问题"><a href="#1-发现问题" class="headerlink" title="1. 发现问题"></a>1. 发现问题</h2><p>Vue的项目中，关于对象数组的问题，测试场景是在优惠券列表中大组件中嵌套单个优惠券，当选择某一个优惠券时，修改通过父组件传递过来的对象数据，其中父子组件是通过 <code>props</code>属性在子组件中接收数组中的对象的数据，在子组件中<code>data</code>中设置一个变量判断该子组件是否选中，初始数据为通过<code>props</code>传递的数据，并在<code>template</code>进行展示，最后改变状态是在子组件中通过 <code>$emit</code>发布订阅模式，测试到了改变父组件中的对象数组中的数据，但是测试中并没有子组件中数据显示的同步，没有改变相应的状态；<br><img src="/.io//1.png" alt="画图"></p>
 <h2 id="2-问题原因分析"><a href="#2-问题原因分析" class="headerlink" title="2. 问题原因分析"></a>2. 问题原因分析</h2><ol>
 <li>在父组件中是通过<code>v-for</code>循环遍历对象数组数据，将遍历的每一个对象传递到每一个子组件中，子组件通过<code>props</code>接收对象，当子组件中通过 <code>$emit</code>发布订阅模式修改父组件中数据时，父组件中的对象数组是该改变了，不过可能由于数据嵌套层次更深，所以双向数据绑定失败，因而使用<code>Vue</code>的全局API接口<code>Vue.set( target, key, value )</code>，手动在父组件中修改数据，测试发现数据还是没有实现展示；</li>
 <li>然后发现展示状态是通过在子组件中<code>data</code>中设置一个变量进行控制的，该变量初始化数据是父组件传递的对象数据中的状态展示属性，不过在修改了父组件中的该数据后，子组件中的数据没有改变，因而造成Vue的双向数据绑定失败；</li>
@@ -262,7 +262,7 @@
 <li>使用<code>Vue</code>的全局API接口<code>Vue.set( target, key, value )</code>，手动修改对象数组数据；</li>
 <li>删除设置在子组件<code>data</code>中的状态控制变量，直接使用<code>props</code>传递的对象数据进行状态的控制；</li>
 </ol>
-<h2 id="4-解决问题的方法"><a href="#4-解决问题的方法" class="headerlink" title="4. 解决问题的方法"></a>4. 解决问题的方法</h2><p>在子组件中，不要在<code>data</code>中设置一个状态展示变量，而是直接将通过<code>props</code>中获取的对象中的变量在<code>template</code>中使用，当修改了父组件中的对象数组中的数据时，会自动将传入子组件的数据进行修改，状态展示也发生了变化，实现了数据的绑定；<br><img src="Vue%E4%B8%AD%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98/2.png" alt="画图2"></p>
+<h2 id="4-解决问题的方法"><a href="#4-解决问题的方法" class="headerlink" title="4. 解决问题的方法"></a>4. 解决问题的方法</h2><p>在子组件中，不要在<code>data</code>中设置一个状态展示变量，而是直接将通过<code>props</code>中获取的对象中的变量在<code>template</code>中使用，当修改了父组件中的对象数组中的数据时，会自动将传入子组件的数据进行修改，状态展示也发生了变化，实现了数据的绑定；<br><img src="/.io//2.png" alt="画图2"></p>
 
     </div>
 
