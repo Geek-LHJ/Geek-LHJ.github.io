@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-68x68-L.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-68x68-L.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 
@@ -40,27 +40,23 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
-  <meta name="description" content="1111">
-<meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="https://geek-lhj.github.io/2020/01/05/test/index.html">
+  <meta name="description" content="Geekleng个人站，主要涉及前端知识共享、实践教程、前沿技术共同学习等方面">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GeekLeng">
+<meta property="og:url" content="https://geek-lhj.github.io/tags/Git/index.html">
 <meta property="og:site_name" content="GeekLeng">
-<meta property="og:description" content="1111">
+<meta property="og:description" content="Geekleng个人站，主要涉及前端知识共享、实践教程、前沿技术共同学习等方面">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://geek-lhj.github.io/.io//1.png">
-<meta property="article:published_time" content="2020-01-05T07:22:34.000Z">
-<meta property="article:modified_time" content="2020-01-05T07:34:16.316Z">
 <meta property="article:author" content="GeekLeng">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://geek-lhj.github.io/.io//1.png">
 
-<link rel="canonical" href="https://geek-lhj.github.io/2020/01/05/test/">
+<link rel="canonical" href="https://geek-lhj.github.io/tags/Git/">
 
 
 <script id="page-configurations">
@@ -68,11 +64,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: true
+    isPost: false
   };
 </script>
 
-  <title>test | GeekLeng</title>
+  <title>Tag: Git | GeekLeng</title>
   
 
 
@@ -103,6 +99,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="GeekLeng" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -146,19 +143,44 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
 
   </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>Sitemap</a>
-
-  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -179,72 +201,50 @@
           <div class="content">
             
 
-  <div class="posts-expand">
-      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://geek-lhj.github.io/2020/01/05/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="GeekLeng">
-      <meta itemprop="description" content="Geekleng个人站，主要涉及前端知识共享、实践教程、前沿技术共同学习等方面">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeekLeng">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          test
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h1 class="collection-header">Git
+          <small>Tag</small>
         </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-01-05 15:22:34 / Modified: 15:34:16" itemprop="dateCreated datePublished" datetime="2020-01-05T15:22:34+08:00">2020-01-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+      </div>
 
       
-        <p>1111</p>
-<p><img src="/.io//1.png" alt="工作区暂存区版本库的关系图"></p>
-
+    <div class="collection-year">
+      <h1 class="collection-header">2019</h1>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2019-03-10T18:38:58+08:00"
+              content="2019-03-10">
+          03-10
+        </time>
+      </div>
 
-        
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2019/03/10/Git%E6%95%99%E7%A8%8B%E7%AC%94%E8%AE%B0/" itemprop="url">
+            <span itemprop="name">Git教程笔记</span>
+          </a>
+      </h2>
 
-
-        
-      </footer>
-    
+    </header>
   </article>
+
+    </div>
+  </div>
   
   
   
 
-  </div>
+  
+
 
 
           </div>
@@ -300,6 +300,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GeekLeng"
+      src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">GeekLeng</p>
   <div class="site-description" itemprop="description">Geekleng个人站，主要涉及前端知识共享、实践教程、前沿技术共同学习等方面</div>
 </div>
@@ -308,12 +310,30 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Geek-LHJ" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Geek-LHJ" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:15501899678@163.com" title="E-Mail → mailto:15501899678@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -333,7 +353,7 @@
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
@@ -360,6 +380,8 @@
   </div>
 
   
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
@@ -375,6 +397,8 @@
 <script src="/js/next-boot.js"></script>
 
 
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
 
 
   
@@ -382,6 +406,10 @@
 
 
 
+  
+<script src="/js/local-search.js"></script>
+
+
 
 
 
@@ -396,6 +424,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz',
+      appKey: 'VnP4D53JVOGpUDoNiPvJ0BNc',
+      placeholder: "",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
