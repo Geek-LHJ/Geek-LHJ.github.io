@@ -42,7 +42,7 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
     path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
@@ -153,9 +153,34 @@
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -1230,7 +1255,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>485</span>
+              <span>537</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -1249,7 +1274,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在Angular的项目中，发现了和上一篇Vue中一样的浏览器页面缓存问题，测试发现从一个列表页面跳转到具体的详情页面时，只有第一次是成功跳转，之后的跳转都是走了浏览器缓存，具体查看文档的解决方法；</p>
+          <p>在 Angular 的项目中，发现了和上一篇Vue中一样的浏览器页面缓存问题，测试发现从一个列表页面跳转到具体的详情页面时，只有第一次是成功跳转，之后的跳转都是走了浏览器缓存，具体查看文档的解决方法；</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/02/20/Angular%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/#more" rel="contents">
@@ -1696,6 +1721,10 @@
     })();
   }
   </script>
+
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

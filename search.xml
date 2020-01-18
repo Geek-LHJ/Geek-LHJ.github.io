@@ -1116,7 +1116,7 @@
   <entry>
     <title>Angular页面跳转数据缓存问题</title>
     <url>/2019/02/20/Angular%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>在Angular的项目中，发现了和上一篇Vue中一样的浏览器页面缓存问题，测试发现从一个列表页面跳转到具体的详情页面时，只有第一次是成功跳转，之后的跳转都是走了浏览器缓存，具体查看文档的解决方法；</p>
+    <content><![CDATA[<p>在 Angular 的项目中，发现了和上一篇Vue中一样的浏览器页面缓存问题，测试发现从一个列表页面跳转到具体的详情页面时，只有第一次是成功跳转，之后的跳转都是走了浏览器缓存，具体查看文档的解决方法；</p>
 <a id="more"></a>
 
 <p>Angular页面跳转数据缓存问题</p>
@@ -1126,8 +1126,7 @@
 <li><p>解决问题的方法<br>分析得知这是一个关于浏览器页面数据缓存的问题，因而只要清除详情页面在页面中的缓存即可，通过分析 Angular 的项目中的页面 js 文件，增加一个 cache属性即可：</p>
 </li>
 </ol>
-<p>function ($stateProvider) {<br>  $stateProvider.state(‘index.NewsList’, {<br>    url: ‘/NewsList’,<br>    cache: true,<br>    views: {…},<br>    params: {…}<br>  });<br>}</p>
-]]></content>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params">$stateProvider</span>) </span>&#123;</span><br><span class="line">  $stateProvider.state(<span class="string">'index.NewsList'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/NewsList'</span>,</span><br><span class="line">    cache: <span class="literal">true</span>,</span><br><span class="line">    views: &#123;...&#125;,</span><br><span class="line">    params: &#123;...&#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>问题解决</category>
         <category>Angular</category>
