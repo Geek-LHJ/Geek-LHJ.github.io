@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-68x68-L.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-68x68-L.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-pace-theme-center-radar.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://geek-lhj.github.io').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="状态模式的关键是区分事物内部的状态，事物内部状态的改变往往会带来事物的行为改变；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript设计模式(十三)状态模式">
+<meta property="og:url" content="https://geek-lhj.github.io/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="GeekLeng">
+<meta property="og:description" content="状态模式的关键是区分事物内部的状态，事物内部状态的改变往往会带来事物的行为改变；">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://geek-lhj.github.io/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%94%B5%E7%81%AF.png">
+<meta property="article:published_time" content="2020-10-10T00:13:01.000Z">
+<meta property="article:modified_time" content="2020-04-11T07:56:47.608Z">
+<meta property="article:author" content="GeekLeng">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="状态模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geek-lhj.github.io/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%94%B5%E7%81%AF.png">
+
+<link rel="canonical" href="https://geek-lhj.github.io/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>JavaScript设计模式(十三)状态模式 | GeekLeng</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="GeekLeng" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GeekLeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Front-end Dev Engineer</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Geek-LHJ" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://geek-lhj.github.io/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="GeekLeng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekLeng">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript设计模式(十三)状态模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-10 08:13:01" itemprop="dateCreated datePublished" datetime="2020-10-10T08:13:01+08:00">2020-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" class="post-meta-item leancloud_visitors" data-flag-title="JavaScript设计模式(十三)状态模式" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>状态模式的关键是区分事物内部的状态，事物内部状态的改变往往会带来事物的行为改变；</p>
+<a id="more"></a>
+
+<h3 id="13-状态模式"><a href="#13-状态模式" class="headerlink" title="13 状态模式"></a>13 状态模式</h3><p>状态模式的关键是区分事物内部的状态，事物内部状态的改变往往会带来事物的行为改变；</p>
+<h4 id="13-1-初识状态模式-电灯程序"><a href="#13-1-初识状态模式-电灯程序" class="headerlink" title="13.1 初识状态模式-电灯程序"></a>13.1 初识状态模式-电灯程序</h4><blockquote>
+<ol>
+<li>开关控制电灯的打开关闭状态；</li>
+</ol>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.state = <span class="string">'off'</span>; <span class="comment">// 给电灯设置初始状态 off</span></span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>; <span class="comment">// 电灯开关按钮</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 定义 Light.prototype.init 方法</span></span><br><span class="line">Light.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> button = <span class="built_in">document</span>.createElement( <span class="string">'button'</span> ), self = <span class="keyword">this</span>;</span><br><span class="line">  button.innerHTML = <span class="string">'开关'</span>;</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="built_in">document</span>.body.appendChild( button );</span><br><span class="line">  <span class="keyword">this</span>.button.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; self.buttonWasPressed(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 开关按下操作</span></span><br><span class="line">Light.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="keyword">this</span>.state === <span class="string">'off'</span> )&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">'开灯'</span> );</span><br><span class="line">    <span class="keyword">this</span>.state = <span class="string">'on'</span>;</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( <span class="keyword">this</span>.state === <span class="string">'on'</span> )&#123;</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">'关灯'</span> );</span><br><span class="line">    <span class="keyword">this</span>.state = <span class="string">'off'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> Light();</span><br><span class="line">light.init();</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子使用一个变量 <code>state</code> 来记录按钮的当前状态，在事件发生时，再根据这个状态来决定下一步的行为；不过当电灯的状态增加时（如强光，弱光状态等），需要手动修改 <code>buttonWasPressed</code> 函数，这样就是违反程序的<code>开放-封闭原则</code>，状态之间的切换关系是在 <code>buttonWasPressed</code> 函数增加 <code>if-else</code> 判断，当状态很多时， <code>buttonWasPressed</code> 函数会更加难以阅读和维护；</p>
+<blockquote>
+<ol start="2">
+<li>状态模式改进电灯程序：</li>
+</ol>
+</blockquote>
+<p>状态模式的关键是把事物的每种状态都封装成单独的类，跟此种状态有关的行为都被封装在这个类的内部，所以 <code>button</code> 被按下的的时候，只需要在上下文中，把这个请求委托给当前的状态对象即可，该状态对象会负责渲染它自身的行为；</p>
+<p><img src="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%94%B5%E7%81%AF.png" alt="状态模式电灯"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先将定义 3 个状态类，分别是 offLightState(关灯状态)、WeakLightState(弱光状态)、 strongLightState(强光状态) ,每个类都有一个原型方法 buttonWasPressed，代表在各自状态下点击按钮发送的行为；</span></span><br><span class="line"><span class="keyword">var</span> OffLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">OffLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'弱光'</span> ); <span class="comment">// offLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.weakLightState ); <span class="comment">// 切换状态到 weakLightState</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> WeakLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">WeakLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'强光'</span> ); <span class="comment">// weakLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.strongLightState ); <span class="comment">// 切换状态到 strongLightState</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> StrongLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">StrongLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'关灯'</span> ); <span class="comment">// strongLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.offLightState ); <span class="comment">// 切换状态到 offLightState</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Light 类：在构造函数里为每个状态类都创建一个状态对象</span></span><br><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.offLightState = <span class="keyword">new</span> OffLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.weakLightState = <span class="keyword">new</span> WeakLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.strongLightState = <span class="keyword">new</span> StrongLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Light 初始化方法</span></span><br><span class="line">Light.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> button = <span class="built_in">document</span>.createElement( <span class="string">'button'</span> ), self = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="built_in">document</span>.body.appendChild( button );</span><br><span class="line">  <span class="keyword">this</span>.button.innerHTML = <span class="string">'开关'</span>;</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.offLightState; <span class="comment">// 设置当前电灯状态为关灯</span></span><br><span class="line">  <span class="keyword">this</span>.button.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    self.currState.buttonWasPressed(); <span class="comment">// 按钮被按下的事件请求委托给当前持有的状态对象去执行</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 实现 Light.prototype.setState 方法：状态对象可以通过这个方法来切换 light 对象的状态，状态的切换规律事先被完好定义在各个状态类中；</span></span><br><span class="line">Light.prototype.setState = <span class="function"><span class="keyword">function</span>(<span class="params"> newState </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.currState = newState;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 测试效果</span></span><br><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> Light();</span><br><span class="line">light.init();</span><br></pre></td></tr></table></figure>
+
+<p>状态模式可以使每一种状态和它对应的行为之间的关系局部化，这些行为被分散和封装在各自对应的状态类之中，便于阅读和管理代码；状态之间的切换都被分布在状态类内部，这使得我们无需编写过多的 <code>if-else</code> 条件分支语言来控制状态之间的转换；</p>
+<p>上面例子中若需要为 <code>light</code> 对象增加一种新的状态时，只需要增加一个新的状态类，再稍稍改变一些现有的代码即可；若现在 light 对象多了一种超强光的状态，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先增加 SuperStrongLightState 类；</span></span><br><span class="line"><span class="keyword">var</span> SuperStrongLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">SuperStrongLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'关灯'</span> );</span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.offLightState );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 再在 Light 构造函数里新增一个 superStrongLightState 对象：</span></span><br><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.offLightState = <span class="keyword">new</span> OffLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.weakLightState = <span class="keyword">new</span> WeakLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.strongLightState = <span class="keyword">new</span> StrongLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.superStrongLightState = <span class="keyword">new</span> SuperStrongLightState( <span class="keyword">this</span> ); <span class="comment">// 新增 superStrongLightState 对象</span></span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 最后改变状态类之间的切换规则，从 StrongLightState----&gt;OffLightState 变为 StrongLightState----&gt;SuperStrongLightState ----&gt;OffLightState：</span></span><br><span class="line">StrongLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'超强光'</span> ); <span class="comment">// strongLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.superStrongLightState ); <span class="comment">// 切换状态到 offLightState</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="13-2-状态模式的通用结构"><a href="#13-2-状态模式的通用结构" class="headerlink" title="13.2 状态模式的通用结构"></a>13.2 状态模式的通用结构</h4><p>在电灯的例子中，首先定义了 <code>Light</code> 类， Light类在这里也被称为上下文（ <code>Context</code> ）；随后在 <code>Light</code> 的构造函数中创建每一个状态类的实例对象， <code>Context</code> 将持有这些状态对象的引用，以便把请求委托给状态对象；用户的请求，即点击 <code>button</code> 的动作也是实现在 <code>Context</code> 中的，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.offLightState = <span class="keyword">new</span> OffLightState( <span class="keyword">this</span> ); <span class="comment">// 持有状态对象的引用</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line">Light.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> button = <span class="built_in">document</span>.createElement( <span class="string">'button'</span> ), self = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="built_in">document</span>.body.appendChild( button );</span><br><span class="line">  <span class="keyword">this</span>.button.innerHTML = <span class="string">'开关'</span>;</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.offLightState; <span class="comment">// 设置默认初始状态</span></span><br><span class="line">  <span class="keyword">this</span>.button.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// 定义用户的请求动作  </span></span><br><span class="line">    self.currState.buttonWasPressed();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接下来要编写各种状态类， <code>light</code> 对象被传入状态类的构造函数，状态对象也需要持有 <code>light</code> 对象的引用，以便调用 <code>light</code> 中的方法或者直接操作 <code>light</code> 对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> OffLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">OffLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'弱光'</span> );</span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.weakLightState );</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="13-3-状态模式示例——文件上传"><a href="#13-3-状态模式示例——文件上传" class="headerlink" title="13.3 状态模式示例——文件上传"></a>13.3 状态模式示例——文件上传</h4><p>文件上传中，包括有扫描、正在上传、暂停、上传成功、上传失败这几种状态，点击同一个按钮，在上传中和<br>暂停状态下的行为表现是不一样的，如上传中，点击按钮暂停，暂停中，点击按钮继续播放；</p>
+<p>文件上传中，设置 暂停/继续 和 删除两个按钮，点击这两个按钮的发生行为如下：</p>
+<ul>
+<li>文件在扫描状态中，是不能进行任何操作的，既不能暂停也不能删除文件，只能等待扫描完成。扫描完成之后，根据文件的 md5 值判断，若确认该文件已经存在于服务器，则直接跳到上传完成状态。如果该文件的大小超过允许上传的最大值，或者该文件已经损坏，则跳往上传失败状态。剩下的情况下才进入上传中状态；</li>
+<li>上传过程中可以点击暂停按钮来暂停上传，暂停后点击同一个按钮会继续上传；</li>
+<li>扫描和上传过程中，点击删除按钮无效，只有在暂停、上传完成、上传失败之后，才能删除文件；</li>
+</ul>
+<blockquote>
+<ol>
+<li>文件上传基本实现：</li>
+</ol>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上传是一个异步的过程，定义全局函数 window.external.upload 来通知上传进度，把当前的文件状态作为参数state 传入函数中</span></span><br><span class="line"><span class="built_in">window</span>.external.upload = <span class="function"><span class="keyword">function</span>(<span class="params"> state </span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( state ); <span class="comment">// 可能为 sign、 uploading、 done、 error</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 上传的插件对象</span></span><br><span class="line"><span class="keyword">var</span> plugin = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> plugin = <span class="built_in">document</span>.createElement( <span class="string">'embed'</span> );</span><br><span class="line">  plugin.style.display = <span class="string">'none'</span>;</span><br><span class="line">  plugin.type = <span class="string">'application/txftn-webkit'</span>;</span><br><span class="line">  plugin.sign = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'开始文件扫描'</span> ); &#125;</span><br><span class="line">  plugin.pause = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'暂停文件上传'</span> ); &#125;;</span><br><span class="line">  plugin.uploading = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'开始文件上传'</span> ); &#125;;</span><br><span class="line">  plugin.del = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'删除文件上传'</span> ); &#125;</span><br><span class="line">  plugin.done = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'文件上传完成'</span> ); &#125;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild( plugin );</span><br><span class="line">  <span class="keyword">return</span> plugin;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">// 定义控制上传过程的对象 Upload 类</span></span><br><span class="line"><span class="keyword">var</span> Upload = <span class="function"><span class="keyword">function</span>(<span class="params"> fileName </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.plugin = plugin;</span><br><span class="line">  <span class="keyword">this</span>.fileName = fileName;</span><br><span class="line">  <span class="keyword">this</span>.button1 = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.button2 = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.state = <span class="string">'sign'</span>; <span class="comment">// 设置初始状态为 waiting</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 初始化 Upload 类函数</span></span><br><span class="line">Upload.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.dom = <span class="built_in">document</span>.createElement( <span class="string">'div'</span> );</span><br><span class="line">  <span class="keyword">this</span>.dom.innerHTML =</span><br><span class="line">    <span class="string">'&lt;span&gt;文件名称:'</span>+ <span class="keyword">this</span>.fileName +<span class="string">'&lt;/span&gt;\</span></span><br><span class="line"><span class="string">    &lt;button data-action="button1"&gt;扫描中&lt;/button&gt;\</span></span><br><span class="line"><span class="string">    &lt;button data-action="button2"&gt;删除&lt;/button&gt;'</span>;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild( <span class="keyword">this</span>.dom );</span><br><span class="line">  <span class="keyword">this</span>.button1 = <span class="keyword">this</span>.dom.querySelector( <span class="string">'[data-action="button1"]'</span> ); <span class="comment">// 第一个按钮</span></span><br><span class="line">  <span class="keyword">this</span>.button2 = <span class="keyword">this</span>.dom.querySelector( <span class="string">'[data-action="button2"]'</span> ); <span class="comment">// 第二个按钮</span></span><br><span class="line">  <span class="keyword">this</span>.bindEvent();</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 两个按钮分别绑定点击事件</span></span><br><span class="line">Upload.prototype.bindEvent = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.button1.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( self.state === <span class="string">'sign'</span> )&#123; <span class="comment">// 扫描状态下，任何操作无效</span></span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'扫描中，点击无效...'</span> );</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( self.state === <span class="string">'uploading'</span> )&#123; <span class="comment">// 上传中，点击切换到暂停</span></span><br><span class="line">      self.changeState( <span class="string">'pause'</span> );</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( self.state === <span class="string">'pause'</span> )&#123; <span class="comment">// 暂停中，点击切换到上传中</span></span><br><span class="line">      self.changeState( <span class="string">'uploading'</span> );</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( self.state === <span class="string">'done'</span> )&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'文件已完成上传, 点击无效'</span> );</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( self.state === <span class="string">'error'</span> )&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'文件上传失败, 点击无效'</span> );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">this</span>.button2.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( self.state === <span class="string">'done'</span> || self.state === <span class="string">'error'</span> || self.state === <span class="string">'pause'</span> )&#123;</span><br><span class="line">      <span class="comment">// 上传完成、上传失败和暂停状态下可以删除</span></span><br><span class="line">      self.changeState( <span class="string">'del'</span> );</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( self.state === <span class="string">'sign'</span> )&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'文件正在扫描中，不能删除'</span> );</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ( self.state === <span class="string">'uploading'</span> )&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'文件正在上传中，不能删除'</span> );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Upload.prototype.changeState 方法，负责切换状态之后的具体行为：</span></span><br><span class="line">Upload.prototype.changeState = <span class="function"><span class="keyword">function</span>(<span class="params"> state </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">switch</span>( state )&#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'sign'</span>:</span><br><span class="line">    <span class="keyword">this</span>.plugin.sign();</span><br><span class="line">    <span class="keyword">this</span>.button1.innerHTML = <span class="string">'扫描中，任何操作无效'</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'uploading'</span>:</span><br><span class="line">    <span class="keyword">this</span>.plugin.uploading();</span><br><span class="line">    <span class="keyword">this</span>.button1.innerHTML = <span class="string">'正在上传，点击暂停'</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'pause'</span>:</span><br><span class="line">    <span class="keyword">this</span>.plugin.pause();</span><br><span class="line">    <span class="keyword">this</span>.button1.innerHTML = <span class="string">'已暂停，点击继续上传'</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'done'</span>:</span><br><span class="line">    <span class="keyword">this</span>.plugin.done();</span><br><span class="line">    <span class="keyword">this</span>.button1.innerHTML = <span class="string">'上传完成'</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'error'</span>:</span><br><span class="line">    <span class="keyword">this</span>.button1.innerHTML = <span class="string">'上传失败'</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'del'</span>:</span><br><span class="line">    <span class="keyword">this</span>.plugin.del();</span><br><span class="line">    <span class="keyword">this</span>.dom.parentNode.removeChild( <span class="keyword">this</span>.dom );</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">'删除完成'</span> );</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>.state = state;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 测试上传文件</span></span><br><span class="line"><span class="keyword">var</span> uploadObj = <span class="keyword">new</span> Upload( <span class="string">'JavaScript 设计模式与开发实践'</span> );</span><br><span class="line">uploadObj.init();</span><br><span class="line"><span class="built_in">window</span>.external.upload = <span class="function"><span class="keyword">function</span>(<span class="params"> state </span>)</span>&#123; <span class="comment">// 插件调用 JavaScript 的方法</span></span><br><span class="line">  uploadObj.changeState( state );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">window</span>.external.upload( <span class="string">'sign'</span> ); <span class="comment">// 文件开始扫描</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.external.upload( <span class="string">'uploading'</span> ); <span class="comment">// 1 秒后开始上传</span></span><br><span class="line">&#125;, <span class="number">1000</span> );</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.external.upload( <span class="string">'done'</span> ); <span class="comment">// 5 秒后上传完成</span></span><br><span class="line">&#125;, <span class="number">5000</span> );</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="2">
+<li>状态模式重构文件上传程序：</li>
+</ol>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一步：提供 window.external.upload 函数</span></span><br><span class="line"><span class="built_in">window</span>.external.upload = <span class="function"><span class="keyword">function</span>(<span class="params"> state </span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( state ); <span class="comment">// 可能为 sign、 uploading、 done、 error</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> plugin = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> plugin = <span class="built_in">document</span>.createElement( <span class="string">'embed'</span> );</span><br><span class="line">  plugin.style.display = <span class="string">'none'</span>;</span><br><span class="line">  plugin.type = <span class="string">'application/txftn-webkit'</span>;</span><br><span class="line">  plugin.sign = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'开始文件扫描'</span> ); &#125;</span><br><span class="line">  plugin.pause = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'暂停文件上传'</span> ); &#125;;</span><br><span class="line">  plugin.uploading = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'开始文件上传'</span> ); &#125;;</span><br><span class="line">  plugin.del = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'删除文件上传'</span> ); &#125;</span><br><span class="line">  plugin.done = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'文件上传完成'</span> ); &#125;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild( plugin );</span><br><span class="line">  <span class="keyword">return</span> plugin;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">// 第二步：改造 Upload 构造函数，在构造函数中为每种状态子类都创建一个实例对象</span></span><br><span class="line"><span class="keyword">var</span> Upload = <span class="function"><span class="keyword">function</span>(<span class="params"> fileName </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.plugin = plugin;</span><br><span class="line">  <span class="keyword">this</span>.fileName = fileName;</span><br><span class="line">  <span class="keyword">this</span>.button1 = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.button2 = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.signState = <span class="keyword">new</span> SignState( <span class="keyword">this</span> ); <span class="comment">// 设置初始状态为 waiting</span></span><br><span class="line">  <span class="keyword">this</span>.uploadingState = <span class="keyword">new</span> UploadingState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.pauseState = <span class="keyword">new</span> PauseState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.doneState = <span class="keyword">new</span> DoneState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.errorState = <span class="keyword">new</span> ErrorState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.signState; <span class="comment">// 设置当前状态</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 第三步：实现 Upload.prototype.init 方法</span></span><br><span class="line">Upload.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.dom = <span class="built_in">document</span>.createElement( <span class="string">'div'</span> );</span><br><span class="line">  <span class="keyword">this</span>.dom.innerHTML =</span><br><span class="line">    <span class="string">'&lt;span&gt;文件名称:'</span>+ <span class="keyword">this</span>.fileName +<span class="string">'&lt;/span&gt;\</span></span><br><span class="line"><span class="string">    &lt;button data-action="button1"&gt;扫描中&lt;/button&gt;\</span></span><br><span class="line"><span class="string">    &lt;button data-action="button2"&gt;删除&lt;/button&gt;'</span>;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild( <span class="keyword">this</span>.dom );</span><br><span class="line">  <span class="keyword">this</span>.button1 = <span class="keyword">this</span>.dom.querySelector( <span class="string">'[data-action="button1"]'</span> );</span><br><span class="line">  <span class="keyword">this</span>.button2 = <span class="keyword">this</span>.dom.querySelector( <span class="string">'[data-action="button2"]'</span> );</span><br><span class="line">  <span class="keyword">this</span>.bindEvent();</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 第四步：负责具体的按钮事件实现</span></span><br><span class="line">Upload.prototype.bindEvent = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.button1.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    self.currState.clickHandler1();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>.button2.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    self.currState.clickHandler2();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Upload.prototype.sign = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.plugin.sign();</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.signState;</span><br><span class="line">&#125;;</span><br><span class="line">Upload.prototype.uploading = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.button1.innerHTML = <span class="string">'正在上传，点击暂停'</span>;</span><br><span class="line">  <span class="keyword">this</span>.plugin.uploading();</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.uploadingState;</span><br><span class="line">&#125;;</span><br><span class="line">Upload.prototype.pause = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.button1.innerHTML = <span class="string">'已暂停，点击继续上传'</span>;</span><br><span class="line">  <span class="keyword">this</span>.plugin.pause();</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.pauseState;</span><br><span class="line">&#125;;</span><br><span class="line">Upload.prototype.done = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.button1.innerHTML = <span class="string">'上传完成'</span>;</span><br><span class="line">  <span class="keyword">this</span>.plugin.done();</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.doneState;</span><br><span class="line">&#125;;</span><br><span class="line">Upload.prototype.error = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.button1.innerHTML = <span class="string">'上传失败'</span>;</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.errorState;</span><br><span class="line">&#125;;</span><br><span class="line">Upload.prototype.del = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.plugin.del();</span><br><span class="line">  <span class="keyword">this</span>.dom.parentNode.removeChild( <span class="keyword">this</span>.dom );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 第五步：编写各个状态类的实现</span></span><br><span class="line"><span class="keyword">var</span> StateFactory = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> State = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">  State.prototype.clickHandler1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>( <span class="string">'子类必须重写父类的 clickHandler1 方法'</span> );</span><br><span class="line">  &#125;</span><br><span class="line">  State.prototype.clickHandler2 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>( <span class="string">'子类必须重写父类的 clickHandler2 方法'</span> );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"> param </span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span>(<span class="params"> uploadObj </span>)</span>&#123; <span class="keyword">this</span>.uploadObj = uploadObj; &#125;;</span><br><span class="line">    F.prototype = <span class="keyword">new</span> State();</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">var</span> i <span class="keyword">in</span> param )&#123;</span><br><span class="line">      F.prototype[ i ] = param[ i ];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> F;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="keyword">var</span> SignState = StateFactory(&#123;</span><br><span class="line">  clickHandler1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'扫描中，点击无效...'</span> ); &#125;,</span><br><span class="line">  clickHandler2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'文件正在上传中，不能删除'</span> ); &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> UploadingState = StateFactory(&#123;</span><br><span class="line">  clickHandler1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">this</span>.uploadObj.pause(); &#125;,</span><br><span class="line">  clickHandler2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'文件正在上传中，不能删除'</span> ); &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> PauseState = StateFactory(&#123;</span><br><span class="line">  clickHandler1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">this</span>.uploadObj.uploading(); &#125;,</span><br><span class="line">  clickHandler2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">this</span>.uploadObj.del(); &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> DoneState = StateFactory(&#123;</span><br><span class="line">  clickHandler1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'文件已完成上传, 点击无效'</span> ); &#125;,</span><br><span class="line">  clickHandler2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">this</span>.uploadObj.del(); &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> ErrorState = StateFactory(&#123;</span><br><span class="line">  clickHandler1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log( <span class="string">'文件上传失败, 点击无效'</span> ); &#125;,</span><br><span class="line">  clickHandler2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">this</span>.uploadObj.del(); &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 最后测试</span></span><br><span class="line"><span class="keyword">var</span> uploadObj = <span class="keyword">new</span> Upload( <span class="string">'JavaScript 设计模式与开发实践'</span> );</span><br><span class="line">uploadObj.init();</span><br><span class="line"><span class="built_in">window</span>.external.upload = <span class="function"><span class="keyword">function</span>(<span class="params"> state </span>)</span>&#123; uploadObj[ state ](); &#125;;</span><br><span class="line"><span class="built_in">window</span>.external.upload( <span class="string">'sign'</span> );</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.external.upload( <span class="string">'uploading'</span> ); <span class="comment">// 1 秒后开始上传</span></span><br><span class="line">&#125;, <span class="number">1000</span> );</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.external.upload( <span class="string">'done'</span> ); <span class="comment">// 5 秒后上传完成</span></span><br><span class="line">&#125;, <span class="number">5000</span> );</span><br></pre></td></tr></table></figure>
+
+<h4 id="13-4-状态模式的优缺点及性能优化点"><a href="#13-4-状态模式的优缺点及性能优化点" class="headerlink" title="13.4 状态模式的优缺点及性能优化点"></a>13.4 状态模式的优缺点及性能优化点</h4><blockquote>
+<ol>
+<li>状态模式的优点：</li>
+</ol>
+</blockquote>
+<ul>
+<li>状态模式定义了状态与行为之间的关系，并将它们封装在一个类里，通过增加新的状态类，很容易增加新的状态和转换；</li>
+<li>避免 <code>Context</code> 无限膨胀，状态切换的逻辑被分布在状态类中，也去掉了 <code>Context</code> 中原本过多的条件分支；</li>
+<li>用对象代替字符串来记录当前状态，使得状态的切换更加一目了然；</li>
+<li><code>Context</code> 中的请求动作和状态类中封装的行为可以非常容易地独立变化而互不影响；</li>
+</ul>
+<blockquote>
+<ol start="2">
+<li>状态模式的缺点：</li>
+</ol>
+</blockquote>
+<p>状态模式会在系统中定义许多状态类，并且生成许多对象；同时由于逻辑分散在状态类中，虽然减少了 <code>if-else</code>分支语句，但也造成了逻辑分散的问题；</p>
+<blockquote>
+<ol start="3">
+<li>状态模式性能优化点：</li>
+</ol>
+</blockquote>
+<ul>
+<li>有两种选择来管理 <code>state</code> 对象的创建和销毁，第一种是仅当 <code>state</code> 对象被需要时才创建并随后销毁，能有效的节省内存；另一种是一开始就创建好所有的状态对象，并且始终不销毁它们，适用于状态的改变很频繁的场景中；</li>
+<li>本章的例子中，为每个 <code>Context</code> 对象都创建了一组 <code>state</code> 对象，实际上这些 <code>state</code> 对象之间是可以共享的，各 <code>Context</code> 对象可以共享一个 <code>state</code> 对象，这也是享元模式的应用场景之一；</li>
+</ul>
+<h4 id="13-5-状态模式和策略模式的关系"><a href="#13-5-状态模式和策略模式的关系" class="headerlink" title="13.5 状态模式和策略模式的关系"></a>13.5 状态模式和策略模式的关系</h4><p>状态模式和策略模式都封装了一系列的算法或者行为，它们的类图看起来来几乎一模一样，但在意图上有很大不同，因此它们是两种迥然不同的模式；策略模式和状态模式的相同点是都有一个上下文、一些策略或者状态类，上下文把请求委托给这些类来执行；区别是策略模式中的各个策略类之间是平等又平行的，它们之间没有任何联系，所以必须熟知这些策略类的作用，以便可以随时主动切换算法；而在状态模式中，状态和状态对应的行为是早已被封装好的，状态之间的切换也早被规定完成，“改变行为”这件事情发生在状态模式内部，因此我们不需要了解这些细节；</p>
+<h4 id="13-6-JavaScript-版本的状态机"><a href="#13-6-JavaScript-版本的状态机" class="headerlink" title="13.6 JavaScript 版本的状态机"></a>13.6 JavaScript 版本的状态机</h4><p>前面示例都是模拟传统面向对象语言的状态模式实现，为每种状态都定义一个状态子类，然后在 <code>Context</code> 中持有这些状态对象的引用，以便把 <code>currState</code> 设置为当前的状态对象；在 JavaScript 这种“无类”语言中，没有规定让状态对象一定要从类中创建而来。另外， JavaScript 可以非常方便地使用委托技术，并不需要事先让一个对象持有另一个对象。</p>
+<p>下面的状态机选择了通过 <code>Function.prototype.call</code> 方法直接把请求委托给某个字面量对象来执行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式1</span></span><br><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.currState = FSM.off; <span class="comment">// 设置当前状态</span></span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line">Light.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> button = <span class="built_in">document</span>.createElement( <span class="string">'button'</span> ), self = <span class="keyword">this</span>;</span><br><span class="line">  button.innerHTML = <span class="string">'已关灯'</span>;</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="built_in">document</span>.body.appendChild( button );</span><br><span class="line">  <span class="keyword">this</span>.button.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    self.currState.buttonWasPressed.call( self ); <span class="comment">// 把请求委托给 FSM 状态机</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> FSM = &#123;</span><br><span class="line">  off: &#123;</span><br><span class="line">    buttonWasPressed: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'关灯'</span> );</span><br><span class="line">      <span class="keyword">this</span>.button.innerHTML = <span class="string">'下一次按我是开灯'</span>;</span><br><span class="line">      <span class="keyword">this</span>.currState = FSM.on;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  on: &#123;</span><br><span class="line">    buttonWasPressed: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'开灯'</span> );</span><br><span class="line">      <span class="keyword">this</span>.button.innerHTML = <span class="string">'下一次按我是关灯'</span>;</span><br><span class="line">      <span class="keyword">this</span>.currState = FSM.off;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> Light();</span><br><span class="line">light.init();</span><br><span class="line"><span class="comment">// 方式2：利用下面的 delegate 函数来完成这个状态机编写。这是面向对象设计和闭包互换的一个例子，前者把变量保存为对象的属性，而后者把变量封闭在闭包形成的环境</span></span><br><span class="line"><span class="keyword">var</span> delegate = <span class="function"><span class="keyword">function</span>(<span class="params"> client, delegation </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    buttonWasPressed: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// 将客户的操作委托给 delegation 对象</span></span><br><span class="line">      <span class="keyword">return</span> delegation.buttonWasPressed.apply( client, <span class="built_in">arguments</span> );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> FSM = &#123;</span><br><span class="line">  off: &#123;</span><br><span class="line">    buttonWasPressed: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'关灯'</span> );</span><br><span class="line">      <span class="keyword">this</span>.button.innerHTML = <span class="string">'下一次按我是开灯'</span>;</span><br><span class="line">      <span class="keyword">this</span>.currState = <span class="keyword">this</span>.onState;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  on: &#123;</span><br><span class="line">    buttonWasPressed: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log( <span class="string">'开灯'</span> );</span><br><span class="line">      <span class="keyword">this</span>.button.innerHTML = <span class="string">'下一次按我是关灯'</span>;</span><br><span class="line">      <span class="keyword">this</span>.currState = <span class="keyword">this</span>.offState;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.offState = delegate( <span class="keyword">this</span>, FSM.off );</span><br><span class="line">  <span class="keyword">this</span>.onState = delegate( <span class="keyword">this</span>, FSM.on );</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.offState; <span class="comment">// 设置初始状态为关闭状态</span></span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line">Light.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> button = <span class="built_in">document</span>.createElement( <span class="string">'button'</span> ), self = <span class="keyword">this</span>;</span><br><span class="line">  button.innerHTML = <span class="string">'已关灯'</span>;</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="built_in">document</span>.body.appendChild( button );</span><br><span class="line">  <span class="keyword">this</span>.button.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; self.currState.buttonWasPressed(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> Light();</span><br><span class="line">light.init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="13-7-状态模式小结"><a href="#13-7-状态模式小结" class="headerlink" title="13.7 状态模式小结"></a>13.7 状态模式小结</h4><p>状态模式是非常有效的模式之一，通过状态模式重构代码之后，会让代码会变得清晰。虽然状态模式一开始并不是非常容易理解，但有必须去好好掌握这种设计模式。</p>
+<blockquote>
+<p>系列链接</p>
+</blockquote>
+<ol>
+<li><a href="/2020/10/10/JavaScript设计模式基础知识">JavaScript 设计模式基础知识</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-1-单例模式">JavaScript 设计模式(一)单例模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-2-策略模式">JavaScript 设计模式(二)策略模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-3-代理模式">JavaScript 设计模式(三)代理模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-4-迭代器模式">JavaScript 设计模式(四)迭代器模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-5-发布订阅模式">JavaScript 设计模式(五)发布订阅模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-6-命令模式">JavaScript 设计模式(六)命令模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-7-组合模式">JavaScript 设计模式(七)组合模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-8-模板方法模式">JavaScript 设计模式(八)模板方法模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-9-享元模式">JavaScript 设计模式(九)享元模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-10-职责链模式">JavaScript 设计模式(十)职责链模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-11-中介者模式">JavaScript 设计模式(十一)中介者模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-12-装饰者模式">JavaScript 设计模式(十二)装饰者模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-13-状态模式">JavaScript 设计模式(十三)状态模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-14-适配器模式">JavaScript 设计模式(十四)适配器模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式设计原则">JavaScript 设计模式(下)设计原则</a></li>
+<li><a href="https://github.com/Geek-LHJ/JavaScript-design-pattern" target="_blank" rel="noopener">JavaScript 设计模式练习代码</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　本文结束　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+
+      
+    </div>
+      
+  <div class="popular-posts-header">相关文章推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\10\10\JavaScript设计模式-12-装饰者模式\" rel="bookmark">JavaScript设计模式(十二)装饰者模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\10\10\JavaScript设计模式-1-单例模式\" rel="bookmark">JavaScript设计模式(一)单例模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\10\10\JavaScript设计模式-2-策略模式\" rel="bookmark">JavaScript设计模式(二)策略模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\10\10\JavaScript设计模式-3-代理模式\" rel="bookmark">JavaScript设计模式(三)代理模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\10\10\JavaScript设计模式-4-迭代器模式\" rel="bookmark">JavaScript设计模式(四)迭代器模式</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div><p style="font-size:14px; color:#34495e; margin:0 0 5px 0;">赞赏一下吧～ 还可以关注公众号订阅最新内容</p></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="GeekLeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="GeekLeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 设计模式</a>
+              <a href="/tags/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 状态模式</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-12-%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/" rel="prev" title="JavaScript设计模式(十二)装饰者模式">
+      <i class="fa fa-chevron-left"></i> JavaScript设计模式(十二)装饰者模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-14-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" rel="next" title="JavaScript设计模式(十四)适配器模式">
+      JavaScript设计模式(十四)适配器模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#13-状态模式"><span class="nav-text">13 状态模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-初识状态模式-电灯程序"><span class="nav-text">13.1 初识状态模式-电灯程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-2-状态模式的通用结构"><span class="nav-text">13.2 状态模式的通用结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-3-状态模式示例——文件上传"><span class="nav-text">13.3 状态模式示例——文件上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-4-状态模式的优缺点及性能优化点"><span class="nav-text">13.4 状态模式的优缺点及性能优化点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-5-状态模式和策略模式的关系"><span class="nav-text">13.5 状态模式和策略模式的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-6-JavaScript-版本的状态机"><span class="nav-text">13.6 JavaScript 版本的状态机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-7-状态模式小结"><span class="nav-text">13.7 状态模式小结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GeekLeng"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">GeekLeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Geek-LHJ" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Geek-LHJ" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:15501899678@163.com" title="E-Mail → mailto:15501899678@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/" title="https:&#x2F;&#x2F;github.com&#x2F;" rel="noopener" target="_blank">Github</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com&#x2F;" rel="noopener" target="_blank">Baidu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://developer.mozilla.org/zh-CN/" title="https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;" rel="noopener" target="_blank">MDN</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GeekLeng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">398k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:01</span>
+</div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz',
+            'X-LC-Key': 'VnP4D53JVOGpUDoNiPvJ0BNc',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 21179,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: true,
+      appId: 'tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz',
+      appKey: 'VnP4D53JVOGpUDoNiPvJ0BNc',
+      placeholder: "留下邮箱，有回复时你将收到提醒。",
+      avatar: 'wavatar',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":140,"height":180},"mobile":{"show":false}});</script></body>
+</html>
