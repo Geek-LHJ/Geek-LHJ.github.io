@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-68x68-L.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-68x68-L.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-pace-theme-center-radar.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://geek-lhj.github.io').hostname,
+    root: '/',
+    scheme: 'Mist',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="策略模式定义： 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript设计模式(二)策略模式">
+<meta property="og:url" content="https://geek-lhj.github.io/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="GeekLeng">
+<meta property="og:description" content="策略模式定义： 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换；">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-10T00:02:01.000Z">
+<meta property="article:modified_time" content="2020-04-11T08:06:14.018Z">
+<meta property="article:author" content="GeekLeng">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="策略模式">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://geek-lhj.github.io/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>JavaScript设计模式(二)策略模式 | GeekLeng</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="GeekLeng" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GeekLeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Front-end Dev Engineer</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Geek-LHJ" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://geek-lhj.github.io/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="GeekLeng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekLeng">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript设计模式(二)策略模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-10 08:02:01" itemprop="dateCreated datePublished" datetime="2019-10-10T08:02:01+08:00">2019-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" class="post-meta-item leancloud_visitors" data-flag-title="JavaScript设计模式(二)策略模式" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>策略模式定义： 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换；</p>
+<a id="more"></a>
+
+<h3 id="2-策略模式"><a href="#2-策略模式" class="headerlink" title="2 策略模式"></a>2 策略模式</h3><p>策略模式定义： 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换；</p>
+<h4 id="2-1-策略模式"><a href="#2-1-策略模式" class="headerlink" title="2.1 策略模式"></a>2.1 策略模式</h4><p>策略模式的目的就是将算法的使用与算法的实现分离开来，将不变的部分和变化的部分隔开是每个设计模式的主题；</p>
+<p>一个基于策略模式的程序至少由两部分组成。第一个部分是一组策略类，策略类封装了具体的算法，并负责具体的计算过程。 第二个部分是环境类 Context， Context 接受客户的请求，随后把请求委托给某一个策略类。要做到这点，说明 Context 中要维持对某个策略对象的引用；</p>
+<blockquote>
+<p>实例：积分模式（基础分乘上对于的等级倍数）</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 最简单代码实现</span></span><br><span class="line"><span class="keyword">var</span> calculateBonus = <span class="function"><span class="keyword">function</span>(<span class="params"> level, base </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( level === <span class="string">'S'</span> )&#123; <span class="keyword">return</span> base * <span class="number">4</span>; &#125;</span><br><span class="line">  <span class="keyword">if</span> ( level === <span class="string">'A'</span> )&#123; <span class="keyword">return</span> base * <span class="number">3</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">calculateBonus( <span class="string">'B'</span>, <span class="number">10</span> ); <span class="comment">// 输出： 40</span></span><br><span class="line">calculateBonus( <span class="string">'S'</span>, <span class="number">5</span> ); <span class="comment">// 输出： 15</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 模仿传统面向对象语言中的策略模式实现</span></span><br><span class="line"><span class="keyword">var</span> performanceS = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">performanceS.prototype.calculate = <span class="function"><span class="keyword">function</span>(<span class="params"> base </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> base * <span class="number">4</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> performanceA = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">  performanceA.prototype.calculate = <span class="function"><span class="keyword">function</span>(<span class="params"> base </span>)</span>&#123;</span><br><span class="line"><span class="keyword">return</span> base * <span class="number">3</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 定义总分类 Bonus：</span></span><br><span class="line"><span class="keyword">var</span> Bonus = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.base = <span class="literal">null</span>; <span class="comment">// 原始值</span></span><br><span class="line">  <span class="keyword">this</span>.strategy = <span class="literal">null</span>; <span class="comment">// 等级对应的策略对象</span></span><br><span class="line">&#125;;</span><br><span class="line">Bonus.prototype.setSalary = <span class="function"><span class="keyword">function</span>(<span class="params"> base </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.base = base; <span class="comment">// 设置基础值</span></span><br><span class="line">&#125;;</span><br><span class="line">Bonus.prototype.setStrategy = <span class="function"><span class="keyword">function</span>(<span class="params"> strategy </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.strategy = strategy; <span class="comment">// 设置等级对应的策略对象</span></span><br><span class="line">&#125;;</span><br><span class="line">Bonus.prototype.getBonus = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// 取得总分数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.strategy.calculate( <span class="keyword">this</span>.base ); <span class="comment">// 把计算分数的操作委托给对应的策略对象</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-JavaScript-版本的策略模式"><a href="#2-2-JavaScript-版本的策略模式" class="headerlink" title="2.2 JavaScript 版本的策略模式"></a>2.2 JavaScript 版本的策略模式</h4><p>在 JavaScript 语言中，函数也是对象，所以更简单和直接的做法是把 <code>strategy</code> 直接定义为函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> strategies = &#123;</span><br><span class="line">  <span class="string">"S"</span>: <span class="function"><span class="keyword">function</span>(<span class="params"> base </span>)</span>&#123; <span class="keyword">return</span> base * <span class="number">4</span>; &#125;,</span><br><span class="line">  <span class="string">"A"</span>: <span class="function"><span class="keyword">function</span>(<span class="params"> base </span>)</span>&#123; <span class="keyword">return</span> base * <span class="number">3</span>; &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> calculateBonus = <span class="function"><span class="keyword">function</span>(<span class="params"> level, base </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> strategies[ level ]( base );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log( calculateBonus( <span class="string">'S'</span>, <span class="number">10</span> ) ); <span class="comment">// 输出： 40</span></span><br><span class="line"><span class="built_in">console</span>.log( calculateBonus( <span class="string">'A'</span>, <span class="number">5</span> ) ); <span class="comment">// 输出： 15</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-策略模式实现表单校验"><a href="#2-3-策略模式实现表单校验" class="headerlink" title="2.3 策略模式实现表单校验"></a>2.3 策略模式实现表单校验</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 步骤1. 封装策略对象</span></span><br><span class="line"><span class="keyword">var</span> strategies = &#123;</span><br><span class="line">  isNonEmpty: <span class="function"><span class="keyword">function</span>(<span class="params"> value, errorMsg </span>)</span>&#123; <span class="comment">// 不为空</span></span><br><span class="line">    <span class="keyword">if</span> ( value === <span class="string">''</span> )&#123; <span class="keyword">return</span> errorMsg ; &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  minLength: <span class="function"><span class="keyword">function</span>(<span class="params"> value, length, errorMsg </span>)</span>&#123; <span class="comment">// 限制最小长度</span></span><br><span class="line">    <span class="keyword">if</span> ( value.length &lt; length )&#123; <span class="keyword">return</span> errorMsg; &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  isMobile: <span class="function"><span class="keyword">function</span>(<span class="params"> value, errorMsg </span>)</span>&#123; <span class="comment">// 手机号码格式</span></span><br><span class="line">    <span class="keyword">if</span> ( !<span class="regexp">/(^1[3|5|8][0-9]&#123;9&#125;$)/</span>.test( value ) )&#123;</span><br><span class="line">      <span class="keyword">return</span> errorMsg;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 步骤2. 实现 Validator 类(作为 Context，负责接收用户的请求并委托给 strategy 对象)</span></span><br><span class="line"><span class="keyword">var</span> Validator = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.cache = []; <span class="comment">// 保存校验规则</span></span><br><span class="line">&#125;;</span><br><span class="line">Validator.prototype.add = <span class="function"><span class="keyword">function</span>(<span class="params"> dom, rule, errorMsg </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ary = rule.split( <span class="string">':'</span> ); <span class="comment">// 把 strategy 和参数分开</span></span><br><span class="line">  <span class="keyword">this</span>.cache.push(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// 把校验的步骤用空函数包装起来，并且放入 cache</span></span><br><span class="line">    <span class="keyword">var</span> strategy = ary.shift(); <span class="comment">// 用户挑选的 strategy</span></span><br><span class="line">    ary.unshift( dom.value ); <span class="comment">// 把 input 的 value 添加进参数列表</span></span><br><span class="line">    ary.push( errorMsg ); <span class="comment">// 把 errorMsg 添加进参数列表</span></span><br><span class="line">    <span class="keyword">return</span> strategies[ strategy ].apply( dom, ary );</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">Validator.prototype.start = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>, validatorFunc; validatorFunc = <span class="keyword">this</span>.cache[ i++ ]; )&#123;</span><br><span class="line">    <span class="keyword">var</span> msg = validatorFunc(); <span class="comment">// 开始校验，并取得校验后的返回信息</span></span><br><span class="line">    <span class="keyword">if</span> ( msg )&#123; <span class="comment">// 如果有确切的返回值，说明校验没有通过</span></span><br><span class="line">      <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 步骤3. 向 Validator 类发送校验的请求</span></span><br><span class="line"><span class="keyword">var</span> validataFunc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> validator = <span class="keyword">new</span> Validator(); <span class="comment">// 创建一个 validator 对象</span></span><br><span class="line">  <span class="comment">/***************添加一些校验规则****************/</span></span><br><span class="line">  validator.add( registerForm.userName, <span class="string">'isNonEmpty'</span>, <span class="string">'用户名不能为空'</span> );</span><br><span class="line">  validator.add( registerForm.password, <span class="string">'minLength:6'</span>, <span class="string">'密码长度不能少于 6 位'</span> );</span><br><span class="line">  validator.add( registerForm.phoneNumber, <span class="string">'isMobile'</span>, <span class="string">'手机号码格式不正确'</span> );</span><br><span class="line">  <span class="keyword">var</span> errorMsg = validator.start(); <span class="comment">// 获得校验结果</span></span><br><span class="line">  <span class="keyword">return</span> errorMsg; <span class="comment">// 返回校验结果</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> registerForm = <span class="built_in">document</span>.getElementById( <span class="string">'registerForm'</span> );</span><br><span class="line">registerForm.onsubmit = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> errorMsg = validataFunc(); <span class="comment">// 如果 errorMsg 有确切的返回值，说明未通过校验</span></span><br><span class="line">  <span class="keyword">if</span> ( errorMsg )&#123;</span><br><span class="line">    alert ( errorMsg );</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// 阻止表单提交</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-策略模式的优缺点"><a href="#2-4-策略模式的优缺点" class="headerlink" title="2.4 策略模式的优缺点"></a>2.4 策略模式的优缺点</h4><blockquote>
+<p>策略模式的优点：</p>
+</blockquote>
+<ul>
+<li>策略模式利用组合、委托和多态等技术和思想，可以有效地避免多重条件选择语句；</li>
+<li>策略模式提供了对开放—封闭原则的完美支持，将算法封装在独立的 strategy 中，使得它们易于切换，易于理解，易于扩展；</li>
+<li>策略模式中的算法也可以复用在系统的其他地方，从而避免许多重复的复制粘贴工作；</li>
+<li>在策略模式中利用组合和委托来让 Context 拥有执行算法的能力，这也是继承的一种更轻便的替代方案；</li>
+</ul>
+<blockquote>
+<p>策略模式的缺点：</p>
+</blockquote>
+<ul>
+<li>使用策略模式会在程序中增加许多策略类或者策略对象，但实际上这比把它们负责的逻辑堆砌在 Context 中要好；</li>
+<li>使用策略模式，必须了解所有的 strategy，必须了解各个 strategy 之间的不同点，这样才能选择一个合适的 strategy ；由于 strategy 要向客户暴露它的所有实现，这是违反最少知识原则；</li>
+</ul>
+<h4 id="2-5-一等函数对象与策略模式"><a href="#2-5-一等函数对象与策略模式" class="headerlink" title="2.5 一等函数对象与策略模式"></a>2.5 一等函数对象与策略模式</h4><p>之前的策略模式示例中，既有模拟传统面向对象语言的版本，也有针对 <code>JavaScript</code> 语言的特有实现。在以类为中心的传统面向对象语言中，不同的算法或者行为被封装在各个策略类中， <code>Context</code> 将请求委托给这些策略对象，这些策略对象会根据请求返回不同的执行结果，这样便能表现出对象的多态性；</p>
+<p>在 JavaScript 中，除了使用类来封装算法和行为之外，直接使用函数也是一种选择。这些“算法”可以被封装到函数中并且四处传递，也就是常说的“高阶函数”。实际上在 <code>JavaScript</code> 这种将函数作为一等对象的语言里，策略模式已经融入到了语言本身当中，我们经常用高阶函数来封装不同的行为，并且把它传递到另一个函数中。当我们对这些函数发出“调用”的消息时，不同的函数会返回不同的执行结果；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> S = <span class="function"><span class="keyword">function</span>(<span class="params"> salary </span>)</span>&#123; <span class="keyword">return</span> salary * <span class="number">4</span>; &#125;;</span><br><span class="line"><span class="keyword">var</span> A = <span class="function"><span class="keyword">function</span>(<span class="params"> salary </span>)</span>&#123; <span class="keyword">return</span> salary * <span class="number">3</span>; &#125;;</span><br><span class="line"><span class="keyword">var</span> B = <span class="function"><span class="keyword">function</span>(<span class="params"> salary </span>)</span>&#123; <span class="keyword">return</span> salary * <span class="number">2</span>; &#125;;</span><br><span class="line"><span class="keyword">var</span> calculateBonus = <span class="function"><span class="keyword">function</span>(<span class="params"> func, salary </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> func( salary );</span><br><span class="line">&#125;;</span><br><span class="line">calculateBonus( S, <span class="number">10</span> ); <span class="comment">// 输出： 40</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-6-策略模式小结"><a href="#2-6-策略模式小结" class="headerlink" title="2.6 策略模式小结"></a>2.6 策略模式小结</h4><p>本小节既有接近传统面向对象语言的策略模式实现，也有更适合 JavaScript 语言的策略模式版本。在 JavaScript 语言的策略模式中，策略类往往被函数所代替，这时策略模式就成为一种“隐形”的模式。</p>
+<blockquote>
+<p>系列链接</p>
+</blockquote>
+<ol>
+<li><a href="/2020/10/10/JavaScript设计模式基础知识">JavaScript 设计模式基础知识</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-1-单例模式">JavaScript 设计模式(一)单例模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-2-策略模式">JavaScript 设计模式(二)策略模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-3-代理模式">JavaScript 设计模式(三)代理模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-4-迭代器模式">JavaScript 设计模式(四)迭代器模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-5-发布订阅模式">JavaScript 设计模式(五)发布订阅模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-6-命令模式">JavaScript 设计模式(六)命令模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-7-组合模式">JavaScript 设计模式(七)组合模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-8-模板方法模式">JavaScript 设计模式(八)模板方法模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-9-享元模式">JavaScript 设计模式(九)享元模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-10-职责链模式">JavaScript 设计模式(十)职责链模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-11-中介者模式">JavaScript 设计模式(十一)中介者模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-12-装饰者模式">JavaScript 设计模式(十二)装饰者模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-13-状态模式">JavaScript 设计模式(十三)状态模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式-14-适配器模式">JavaScript 设计模式(十四)适配器模式</a></li>
+<li><a href="/2020/10/10/JavaScript设计模式设计原则">JavaScript 设计模式(下)设计原则</a></li>
+<li><a href="https://github.com/Geek-LHJ/JavaScript-design-pattern" target="_blank" rel="noopener">JavaScript 设计模式练习代码</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　本文结束　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+
+      
+    </div>
+      
+  <div class="popular-posts-header">相关文章推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\10\10\JavaScript设计模式-13-状态模式\" rel="bookmark">JavaScript设计模式(十三)状态模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\10\10\JavaScript设计模式-1-单例模式\" rel="bookmark">JavaScript设计模式(一)单例模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\10\10\JavaScript设计模式-3-代理模式\" rel="bookmark">JavaScript设计模式(三)代理模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\10\10\JavaScript设计模式-4-迭代器模式\" rel="bookmark">JavaScript设计模式(四)迭代器模式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2019\10\10\JavaScript设计模式-11-中介者模式\" rel="bookmark">JavaScript设计模式(十一)中介者模式</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div><p style="font-size:14px; color:#34495e; margin:0 0 5px 0;">赞赏一下吧～ 还可以关注公众号订阅最新内容</p></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="GeekLeng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="GeekLeng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 设计模式</a>
+              <a href="/tags/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 策略模式</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-1-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="prev" title="JavaScript设计模式(一)单例模式">
+      <i class="fa fa-chevron-left"></i> JavaScript设计模式(一)单例模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-3-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" rel="next" title="JavaScript设计模式(三)代理模式">
+      JavaScript设计模式(三)代理模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-策略模式"><span class="nav-text">2 策略模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-策略模式"><span class="nav-text">2.1 策略模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-JavaScript-版本的策略模式"><span class="nav-text">2.2 JavaScript 版本的策略模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-策略模式实现表单校验"><span class="nav-text">2.3 策略模式实现表单校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-策略模式的优缺点"><span class="nav-text">2.4 策略模式的优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-一等函数对象与策略模式"><span class="nav-text">2.5 一等函数对象与策略模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-策略模式小结"><span class="nav-text">2.6 策略模式小结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GeekLeng"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">GeekLeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Geek-LHJ" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Geek-LHJ" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:15501899678@163.com" title="E-Mail → mailto:15501899678@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/" title="https:&#x2F;&#x2F;github.com&#x2F;" rel="noopener" target="_blank">Github</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.baidu.com/" title="https:&#x2F;&#x2F;www.baidu.com&#x2F;" rel="noopener" target="_blank">Baidu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://developer.mozilla.org/zh-CN/" title="https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;" rel="noopener" target="_blank">MDN</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GeekLeng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">398k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:01</span>
+</div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz',
+            'X-LC-Key': 'VnP4D53JVOGpUDoNiPvJ0BNc',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 21179,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: true,
+      appId: 'tmEFfL5pPK0vBvRMnX3hgVXb-gzGzoHsz',
+      appKey: 'VnP4D53JVOGpUDoNiPvJ0BNc',
+      placeholder: "留下邮箱，有回复时你将收到提醒。",
+      avatar: 'wavatar',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":140,"height":180},"mobile":{"show":false}});</script></body>
+</html>

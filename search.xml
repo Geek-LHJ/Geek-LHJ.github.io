@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>JavaScript设计模式设计原则</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</url>
     <content><![CDATA[<p>JavaScript设计模式设计的三大设计原则：单一职责原则(SRP)、最少知识原则(LKP)、开放封闭原则(OCP)；</p>
 <a id="more"></a>
 
@@ -58,7 +58,7 @@
 <li>外观模式：主要是为子系统中的一组接口提供一个一致的界面，外观模式定义了一个高层接口，这个接口使子系统更加容易使用；</li>
 </ol>
 </blockquote>
-<p><img src="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F.png" alt="外观模式"></p>
+<p><img src="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F.png" alt="外观模式"></p>
 <p>外观模式的作用是对客户屏蔽一组子系统的复杂性，外观模式对客户提供一个简单易用的高层接口，高层接口会把客户的请求转发给子系统来完成具体的功能实现。大多数客户都可以通过请求外观接口来达到访问子系统的目的，如果外观不能满足客户的个性化需求，那么客户也可以选择越过外观来直接访问子系统；</p>
 <h4 id="3-2-3-封装在最少知识原则中的体现"><a href="#3-2-3-封装在最少知识原则中的体现" class="headerlink" title="3.2.3 封装在最少知识原则中的体现"></a>3.2.3 封装在最少知识原则中的体现</h4><p>封装在很大程度上表达的是数据的隐藏。一个模块或者对象可以将内部的数据或者实现细节隐藏起来，只暴露必要的接口 API 供外界访问。对象之间难免产生联系，当一个对象必须引用另外一个对象的时候，我们可以让对象只暴露必要的接口，让对象之间的联系限制在最小的范围之内。把变量的可见性限制在一个尽可能小的范围内，这个变量对其他不相关模块的影响就越小，变量被改写和发生冲突的机会也越小。这也是广义的最少知识原的一种体现。</p>
 <blockquote>
@@ -149,7 +149,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(十四)适配器模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-14-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-14-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>适配器模式的作用是解决两个软件实体间的接口不兼容的问题；</p>
 <a id="more"></a>
 
@@ -202,7 +202,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(十三)状态模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>状态模式的关键是区分事物内部的状态，事物内部状态的改变往往会带来事物的行为改变；</p>
 <a id="more"></a>
 
@@ -221,7 +221,7 @@
 </ol>
 </blockquote>
 <p>状态模式的关键是把事物的每种状态都封装成单独的类，跟此种状态有关的行为都被封装在这个类的内部，所以 <code>button</code> 被按下的的时候，只需要在上下文中，把这个请求委托给当前的状态对象即可，该状态对象会负责渲染它自身的行为；</p>
-<p><img src="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%94%B5%E7%81%AF.png" alt="状态模式电灯"></p>
+<p><img src="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-13-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F%E7%94%B5%E7%81%AF.png" alt="状态模式电灯"></p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 首先将定义 3 个状态类，分别是 offLightState(关灯状态)、WeakLightState(弱光状态)、 strongLightState(强光状态) ,每个类都有一个原型方法 buttonWasPressed，代表在各自状态下点击按钮发送的行为；</span></span><br><span class="line"><span class="keyword">var</span> OffLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">OffLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'弱光'</span> ); <span class="comment">// offLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.weakLightState ); <span class="comment">// 切换状态到 weakLightState</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> WeakLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">WeakLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'强光'</span> ); <span class="comment">// weakLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.strongLightState ); <span class="comment">// 切换状态到 strongLightState</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> StrongLightState = <span class="function"><span class="keyword">function</span>(<span class="params"> light </span>)</span>&#123; <span class="keyword">this</span>.light = light; &#125;;</span><br><span class="line">StrongLightState.prototype.buttonWasPressed = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">'关灯'</span> ); <span class="comment">// strongLightState 对应的行为</span></span><br><span class="line">  <span class="keyword">this</span>.light.setState( <span class="keyword">this</span>.light.offLightState ); <span class="comment">// 切换状态到 offLightState</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Light 类：在构造函数里为每个状态类都创建一个状态对象</span></span><br><span class="line"><span class="keyword">var</span> Light = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.offLightState = <span class="keyword">new</span> OffLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.weakLightState = <span class="keyword">new</span> WeakLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.strongLightState = <span class="keyword">new</span> StrongLightState( <span class="keyword">this</span> );</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Light 初始化方法</span></span><br><span class="line">Light.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> button = <span class="built_in">document</span>.createElement( <span class="string">'button'</span> ), self = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.button = <span class="built_in">document</span>.body.appendChild( button );</span><br><span class="line">  <span class="keyword">this</span>.button.innerHTML = <span class="string">'开关'</span>;</span><br><span class="line">  <span class="keyword">this</span>.currState = <span class="keyword">this</span>.offLightState; <span class="comment">// 设置当前电灯状态为关灯</span></span><br><span class="line">  <span class="keyword">this</span>.button.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    self.currState.buttonWasPressed(); <span class="comment">// 按钮被按下的事件请求委托给当前持有的状态对象去执行</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 实现 Light.prototype.setState 方法：状态对象可以通过这个方法来切换 light 对象的状态，状态的切换规律事先被完好定义在各个状态类中；</span></span><br><span class="line">Light.prototype.setState = <span class="function"><span class="keyword">function</span>(<span class="params"> newState </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.currState = newState;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 测试效果</span></span><br><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> Light();</span><br><span class="line">light.init();</span><br></pre></td></tr></table></figure>
 
 <p>状态模式可以使每一种状态和它对应的行为之间的关系局部化，这些行为被分散和封装在各自对应的状态类之中，便于阅读和管理代码；状态之间的切换都被分布在状态类内部，这使得我们无需编写过多的 <code>if-else</code> 条件分支语言来控制状态之间的转换；</p>
@@ -321,7 +321,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(十二)装饰者模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-12-%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-12-%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>装饰者模式定义为给对象动态地增加职责的方式；装饰者模式能够在不改变对象自身的基础上，在程序运行期间给对象动态地添加职责；</p>
 <a id="more"></a>
 
@@ -389,7 +389,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(十一)中介者模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-11-%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-11-%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>待上传</p>
 <a id="more"></a>
 
@@ -428,7 +428,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(十)职责链模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-10-%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-10-%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>职责链模式使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系，将这些对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止；</p>
 <a id="more"></a>
 
@@ -531,7 +531,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(九)享元模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>享元（ flyweight）模式是一种用于性能优化的模式，享元模式的核心是运用共享技术来有效支持大量细粒度的对象；</p>
 <a id="more"></a>
 
@@ -641,7 +641,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(八)模板方法模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-8-%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-8-%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>待发布</p>
 <a id="more"></a>
 
@@ -680,7 +680,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(七)组合模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-7-%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-7-%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>组合模式就是用小的子对象来构建更大的对象，而这些小的子对象本身也许是由更小的“孙对象”构成的；</p>
 <a id="more"></a>
 
@@ -745,7 +745,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(六)命令模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-6-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-6-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>命令模式的命令指的是一个执行某些特定事情的指令；</p>
 <a id="more"></a>
 
@@ -815,7 +815,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(五)发布订阅模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-5-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-5-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>发布订阅模式定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到通知；</p>
 <a id="more"></a>
 
@@ -897,7 +897,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(四)迭代器模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-4-%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-4-%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>迭代器模式是指提供一种方法顺序访问一个聚合对象中的各个元素，而又不需要暴露该对象的内部表示。迭代器模式可以把迭代的过程从业务逻辑中分离出来，在使用迭代器模式之后，即使不关心对象的内部构造，也可以按顺序访问其中的每个元素。</p>
 <a id="more"></a>
 
@@ -952,7 +952,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(三)代理模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-3-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-3-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>代理模式：为一个对象提供一个代用品或占位符，以便控制对它的访问。代理模式分为保护代理和虚拟代理，保护代理用于控制不同权限的对象对目标对象的访问，虚拟代理把一些开销很大的对象，延迟到真正需要它的时候才去创建；</p>
 <a id="more"></a>
 
@@ -1032,7 +1032,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(二)策略模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-2-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>策略模式定义： 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换；</p>
 <a id="more"></a>
 
@@ -1105,7 +1105,7 @@
   </entry>
   <entry>
     <title>JavaScript设计模式(一)单例模式</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-1-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-1-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>单例模式的定义是： 保证一个类仅有一个实例，并提供一个访问它的全局访问点；</p>
 <a id="more"></a>
 
@@ -1170,8 +1170,8 @@
   </entry>
   <entry>
     <title>JavaScript设计模式基础知识</title>
-    <url>/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<p><img src="/2020/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5.png" alt="JavaScript设计模式与开发实践"></p>
+    <url>/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<p><img src="/2019/10/10/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5.png" alt="JavaScript设计模式与开发实践"></p>
 <!-- 
 设计模式是在面向对象软件设计过程中针对特定问题的简洁而优雅的解决方案，通俗说设计模式是在某种场合下对某个问题的一种解决方案。模式是一些经过了大量实际项目验证的优秀解决方案，熟悉这些模式的程序员会对某些模式的理解也许形成了条件反射，当合适的场景出现时，就可以很快地找到某种模式作为解决方案；所有设计模式的实现都遵循一条原则，即“找出程序中变化的地方，并将变化封装起来”，一个程序的设计总是可以分为可变的部分和不变的部分，将可变的封装起来；模式应该用在正确的地方,只有在我们深刻理解了模式的意图之后，再结合项目的实际场景才会知道是否算正确应用； -->
 
